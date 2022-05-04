@@ -22,5 +22,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* m_graphicsScene;
+    void processFunction(QString raw);
+    void drawFunction();
 };
 #endif // MAINWINDOW_H

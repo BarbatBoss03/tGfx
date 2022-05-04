@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "evaluator.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,9 +27,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::processFunction(QString raw){
+    raw.capacity();
+}
 
 void MainWindow::on_lineEdit_returnPressed()
 {
+    for(int x=-1000; x<1000; x++){
+        for(int y=-1000; y<1000; y++){
 
+        }
+    }
 }
 
