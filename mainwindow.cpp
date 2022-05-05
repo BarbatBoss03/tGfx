@@ -33,10 +33,7 @@ void MainWindow::processFunction(QString raw){
 
 void MainWindow::on_lineEdit_returnPressed()
 {
-    for(int x=-1000; x<1000; x++){
-        for(int y=-1000; y<1000; y++){
-
-        }
-    }
+    Eval.SetString(ui->lineEdit->text());
+    Eval.Parse();
 }
 

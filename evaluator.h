@@ -6,8 +6,11 @@
 #include <QQueue>
 #include <QStack>
 #include <QtMath>
+#include <QMap>
 
-float evalAdd(float arg1, float arg2){
+#include "token.h"
+
+/*float evalAdd(float arg1, float arg2){
     return arg1+arg2;
 }
 
@@ -50,18 +53,28 @@ int evalFact(int arg1){
 
 int evalMinus(int arg1){
     return -arg1;
-}
+}*/
 
 class evaluator
 {
 private:
-    QString in;
-    QString filter1;
-    QStringList tokens, filter2;
+
+    QString filter1="-+*^%/()";
+    QMap<QString, int> priorityDict={{"+", 2},{"-", 2},{"*", 3},{"/", 3},
+                                    {"^", 4},{"(", 1}};
+    QMap<QString, int> assocDict={{"+", 0},{"-", 0},{"*", 0},{"/", 0},
+                                  {"^", 1},{"(", 0}};
+
     float result;
-    bool parsed=false, hasInput=false;
+    bool tokenized=false, parsed=false, hasInput=false;
+
+    QString in;
+    QQueue<token> pTokens;
     QQueue<QString> out;
     QStack<QString> operators;
+
+
+    void Tokenize();
 public:
     evaluator();
     void SetString(QString dataIn);

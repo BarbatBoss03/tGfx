@@ -2,16 +2,6 @@
 
 evaluator::evaluator()
 {
-    parsed=false;
-    hasInput=false;
-    filter1="-+*^/()";
-    filter2.append("sin");
-    filter2.append("cos");
-    filter2.append("tan");
-    filter2.append("ctan");
-    filter2.append("lg");
-    filter2.append("ln");
-    filter2.append("log");
 }
 
 void evaluator::SetString(QString dataIn){
@@ -19,18 +9,38 @@ void evaluator::SetString(QString dataIn){
     this->hasInput=true;
 }
 
-void evaluator::Parse(){
+void evaluator::Tokenize(){
+    token t;
+    QStringList tokens;
     if(this->hasInput){
-        tokens=in.split(filter1);
-        while(!in.isEmpty()){
-            out.enqueue(tokens.first());
-            in.remove(in.indexOf(tokens.first()),tokens.first().size());
-            tokens.removeFirst();
-
+        for(int i=0; i<this->in.size(); i++){
+            if(filter1.contains(this->in[i])){
+                in.insert(i, ' ');
+                i++;
+                in.insert(i+1, ' ');
+                i++;
+            }
         }
+        tokens=in.split(' ');
+        for(const auto& tok:qAsConst(tokens)){
+            t.SetString(tok);
+            pTokens.enqueue(t);
+        }
+        hasInput=false;
+        tokenized=true;
+    }
+    else
+    {
+        throw "NO INPUT";
     }
 }
 
+void evaluator::Parse(){
+    this->Tokenize();
+}
+
+//Cand din input vine un operator cu prioritate mai mica, se muta toti
+//operatorii din stiva de operatori in output
 QString evaluator::GetString(){
     return this->in;
 }

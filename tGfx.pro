@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     evaluator.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    token.cpp
 
 HEADERS += \
     evaluator.h \
-    mainwindow.h
+    mainwindow.h \
+    token.h
 
 FORMS += \
     mainwindow.ui
