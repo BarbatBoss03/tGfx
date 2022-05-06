@@ -70,8 +70,8 @@ private:
 
     QString in;
     QQueue<token> pTokens;
-    QQueue<QString> out;
-    QStack<QString> operators;
+    QQueue<token> out;
+    QStack<token> operatorStack;
 
 
     void Tokenize();

@@ -39,17 +39,39 @@ void evaluator::Tokenize(){
 
 void evaluator::Parse(){
     this->Tokenize();
-    for(token tok:qAsConst(pTokens)){
-        qDebug()<<tok.GetString();
-        if(tok.isFunction())
-            qDebug()<<"FUNCTION";
-        if(tok.isVariable())
-            qDebug()<<"VARIABLE";
-        if(tok.isOperator())
-            qDebug()<<"OPERATOR";
-        if(tok.isNumber())
-            qDebug()<<"NUMBER";
-        qDebug()<<" ";
+    while(!pTokens.isEmpty()){
+        token tok=pTokens.dequeue();
+        if(tok.isNumber()){
+            out.enqueue(tok);
+        }else if(tok.isVariable()){
+            out.enqueue(tok);
+        }else if(tok.isOperator()){
+            while((!operatorStack.isEmpty()
+                   &&
+                   operatorStack.top().GetString()!="(")
+                  &&
+                  ( (priorityDict[tok.GetString()]<
+                    priorityDict[operatorStack.top().GetString()])
+                    ||
+                    (priorityDict[tok.GetString()]==
+                     priorityDict[operatorStack.top().GetString()]
+                     &&
+                     assocDict[tok.GetString()]==0
+                    )
+                    )
+                  )
+            {
+                token tok2=operatorStack.pop();
+                out.enqueue(tok2);
+            }
+            this->operatorStack.push(tok);
+        }else if(tok.GetString()=="("){
+
+        }else if(tok.GetString()==")"){
+
+        }else if(tok.isFunction()){
+            qDebug()<<"FUNCTIONS NOT IMPLEMENTED";
+        }
     }
 }
 
