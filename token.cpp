@@ -8,7 +8,7 @@ token::token()
 void token::SetString(QString in){
     bool ok;
     in.toFloat(&ok);
-    if(in.contains(this->filter)){
+    if(this->filter.contains(in)){
         this->op=true;
         this->tok=in;
     }
@@ -20,8 +20,12 @@ void token::SetString(QString in){
         this->nr=true;
         this->tok=in;
     }
+    else if(in.size()==1&&in[0].isLetter()){
+        this->var=true;
+        this->tok=in;
+    }
     else{
-        throw "INVALID INPUT";
+        //qDebug()<<"INVALID INPUT";
     }
 }
 
@@ -39,4 +43,8 @@ bool token::isNumber(){
 
 bool token::isFunction(){
     return this->func;
+}
+
+bool token::isVariable(){
+    return this->var;
 }

@@ -10,7 +10,6 @@ void evaluator::SetString(QString dataIn){
 }
 
 void evaluator::Tokenize(){
-    token t;
     QStringList tokens;
     if(this->hasInput){
         for(int i=0; i<this->in.size(); i++){
@@ -23,20 +22,35 @@ void evaluator::Tokenize(){
         }
         tokens=in.split(' ');
         for(const auto& tok:qAsConst(tokens)){
-            t.SetString(tok);
-            pTokens.enqueue(t);
+            if(tok!=""){
+                token t;
+                t.SetString(tok);
+                pTokens.enqueue(t);
+            }
         }
         hasInput=false;
         tokenized=true;
     }
     else
     {
-        throw "NO INPUT";
+        //throw "NO INPUT";
     }
 }
 
 void evaluator::Parse(){
     this->Tokenize();
+    for(token tok:qAsConst(pTokens)){
+        qDebug()<<tok.GetString();
+        if(tok.isFunction())
+            qDebug()<<"FUNCTION";
+        if(tok.isVariable())
+            qDebug()<<"VARIABLE";
+        if(tok.isOperator())
+            qDebug()<<"OPERATOR";
+        if(tok.isNumber())
+            qDebug()<<"NUMBER";
+        qDebug()<<" ";
+    }
 }
 
 //Cand din input vine un operator cu prioritate mai mica, se muta toti

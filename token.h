@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QDebug>
 
 class token
 {
@@ -10,7 +11,7 @@ private:
     QString tok;
     QString filter="+-/*()%^!";
     QStringList funcFilter={"sin","cos","atan","tan","ln","log"};
-    bool op=false, nr=false, func=false;
+    bool op=false, nr=false, func=false, var=false;
 public:
     token();
     void SetString(QString in);
@@ -18,6 +19,7 @@ public:
     bool isOperator();
     bool isNumber();
     bool isFunction();
+    bool isVariable();
 };
 
 #endif // TOKEN_H
