@@ -10,6 +10,7 @@ private:
     QString tok;
     QString filter="+-/*()%^!";
     QStringList funcFilter={"sin","cos","atan","tan","ln","log"};
+    bool op=false, nr=false, func=false;
 public:
     token();
     void SetString(QString in);
