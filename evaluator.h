@@ -59,7 +59,9 @@ class evaluator
 {
 private:
 
-    QString filter1="-+*^%/()";
+    QString filter1="-+*^%/";
+    QStringList funcFilter={"sin","cos","atan","tan","ln","log"};
+
     QMap<QString, int> priorityDict={{"+", 2},{"-", 2},{"*", 3},{"/", 3},
                                     {"^", 4},{"(", 1}};
     QMap<QString, int> assocDict={{"+", 0},{"-", 0},{"*", 0},{"/", 0},

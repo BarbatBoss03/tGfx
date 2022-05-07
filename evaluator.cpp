@@ -10,6 +10,7 @@ void evaluator::SetString(QString dataIn){
 }
 
 void evaluator::Tokenize(){
+    this->pTokens.clear();
     QStringList tokens;
     if(this->hasInput){
         for(int i=0; i<this->in.size(); i++){
@@ -18,6 +19,16 @@ void evaluator::Tokenize(){
                 i++;
                 in.insert(i+1, ' ');
                 i++;
+            }
+        }
+        for(const auto& tok:qAsConst(funcFilter)){
+            int index=-1, j=0;
+            index=in.indexOf(tok);
+            while(index!=-1){
+                j=index+tok.size()+2;
+                in.insert(index, ' ');
+                in.insert(index+tok.size(), ' ');
+                index=in.indexOf(tok, j);
             }
         }
         tokens=in.split(' ');
@@ -38,6 +49,8 @@ void evaluator::Tokenize(){
 }
 
 void evaluator::Parse(){
+    this->out.clear();
+    this->operatorStack.clear();
     this->Tokenize();
     while(!pTokens.isEmpty()){
         token tok=pTokens.dequeue();
@@ -64,14 +77,36 @@ void evaluator::Parse(){
                 token tok2=operatorStack.pop();
                 out.enqueue(tok2);
             }
-            this->operatorStack.push(tok);
+            operatorStack.push(tok);
         }else if(tok.GetString()=="("){
-
+            operatorStack.push(tok);
         }else if(tok.GetString()==")"){
-
+            while(operatorStack.top().GetString()!="("){
+                if(operatorStack.isEmpty()){
+                    throw "mismatched paranthesis";
+                }
+                token tok3=operatorStack.pop();
+                out.enqueue(tok3);
+            }
+            //check for mismatched paranthesis
+            if(operatorStack.top().GetString()=="("){
+                operatorStack.pop();
+            }
+            if(operatorStack.top().isFunction()){
+                out.enqueue(operatorStack.pop());
+            }
         }else if(tok.isFunction()){
-            qDebug()<<"FUNCTIONS NOT IMPLEMENTED";
+            operatorStack.push(tok);
         }
+    }
+    while(!operatorStack.isEmpty()){
+        if(operatorStack.top().GetString()!="(")
+            out.enqueue(operatorStack.pop());
+        else
+            throw "mismatched paranthesis";
+    }//check for mismatched paranthesis
+    for(token tok:qAsConst(out)){
+        qDebug()<<tok.GetString();
     }
 }
 

@@ -9,7 +9,7 @@ class token
 {
 private:
     QString tok;
-    QString filter="+-/*()%^!";
+    QString filter="+-/*%^!";
     QStringList funcFilter={"sin","cos","atan","tan","ln","log"};
     bool op=false, nr=false, func=false, var=false;
 public:
