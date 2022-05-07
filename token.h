@@ -11,7 +11,7 @@ private:
     QString tok;
     QString filter="+-/*%^!";
     QStringList funcFilter={"sin","cos","atan","tan","ln","log"};
-    bool op=false, nr=false, func=false, var=false;
+    bool op=false, nr=false, func=false, var=false, lParanthesis=false, rParanthesis=false;
 public:
     token();
     void SetString(QString in);
@@ -20,6 +20,8 @@ public:
     bool isNumber();
     bool isFunction();
     bool isVariable();
+    bool isLPara();
+    bool isRPara();
 };
 
 #endif // TOKEN_H

@@ -12,6 +12,14 @@ void token::SetString(QString in){
         this->op=true;
         this->tok=in;
     }
+    else if(in=="("){
+        this->lParanthesis=true;
+        this->tok=in;
+    }
+    else if(in==")"){
+        this->rParanthesis=true;
+        this->tok=in;
+    }
     else if(this->funcFilter.contains(in)){
         this->func=true;
         this->tok=in;
@@ -47,4 +55,12 @@ bool token::isFunction(){
 
 bool token::isVariable(){
     return this->var;
+}
+
+bool token::isLPara(){
+    return this->lParanthesis;
+}
+
+bool token::isRPara(){
+    return this->rParanthesis;
 }

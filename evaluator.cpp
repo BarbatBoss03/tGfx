@@ -14,7 +14,7 @@ void evaluator::Tokenize(){
     QStringList tokens;
     if(this->hasInput){
         for(int i=0; i<this->in.size(); i++){
-            if(filter1.contains(this->in[i])){
+            if(filter1.contains(this->in[i]) || this->in[i]=='(' || this->in[i]==')'){
                 in.insert(i, ' ');
                 i++;
                 in.insert(i+1, ' ');
@@ -61,7 +61,7 @@ void evaluator::Parse(){
         }else if(tok.isOperator()){
             while((!operatorStack.isEmpty()
                    &&
-                   operatorStack.top().GetString()!="(")
+                   !operatorStack.top().isLPara())
                   &&
                   ( (priorityDict[tok.GetString()]<
                     priorityDict[operatorStack.top().GetString()])
@@ -78,10 +78,10 @@ void evaluator::Parse(){
                 out.enqueue(tok2);
             }
             operatorStack.push(tok);
-        }else if(tok.GetString()=="("){
+        }else if(tok.isLPara()){
             operatorStack.push(tok);
-        }else if(tok.GetString()==")"){
-            while(operatorStack.top().GetString()!="("){
+        }else if(tok.isRPara()){
+            while(operatorStack.top().isLPara()){
                 if(operatorStack.isEmpty()){
                     throw "mismatched paranthesis";
                 }
@@ -89,7 +89,7 @@ void evaluator::Parse(){
                 out.enqueue(tok3);
             }
             //check for mismatched paranthesis
-            if(operatorStack.top().GetString()=="("){
+            if(operatorStack.top().isLPara()){
                 operatorStack.pop();
             }
             if(operatorStack.top().isFunction()){
@@ -100,7 +100,7 @@ void evaluator::Parse(){
         }
     }
     while(!operatorStack.isEmpty()){
-        if(operatorStack.top().GetString()!="(")
+        if(operatorStack.top().isLPara())
             out.enqueue(operatorStack.pop());
         else
             throw "mismatched paranthesis";
