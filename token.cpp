@@ -6,6 +6,8 @@ token::token()
 }
 
 void token::SetString(QString in){
+    this->op=false; this->nr=false; this->func=false; this->var=false;
+    this->lParanthesis=false; this->rParanthesis=false;
     bool ok;
     in.toFloat(&ok);
     if(this->filter.contains(in)){
@@ -33,7 +35,7 @@ void token::SetString(QString in){
         this->tok=in;
     }
     else{
-        //qDebug()<<"INVALID INPUT";
+        throw std::runtime_error("INVALID INPUT");
     }
 }
 

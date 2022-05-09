@@ -10,51 +10,6 @@
 
 #include "token.h"
 
-/*float evalAdd(float arg1, float arg2){
-    return arg1+arg2;
-}
-
-float evalSub(float arg1, float arg2){
-    return arg1-arg2;
-}
-
-float evalMul(float arg1, float arg2){
-    return arg1*arg2;
-}
-
-float evalDiv(float arg1, float arg2){
-    if(arg2==0){
-        throw "DIVIDE BY ZERO";
-    }
-    return arg1/arg2;
-}
-
-int evalMod(int arg1, int arg2){
-    if(arg2==0){
-        throw "DIVIDE BY ZERO";
-    }
-    return arg1%arg2;
-}
-
-float evalPow(float arg1, float arg2){
-    return qPow(arg1, arg2);
-}
-
-int evalFact(int arg1){
-    if (arg1<=0){
-        throw "UNSUPPORTED OPERATION";
-    }
-    int result=1;
-    for(int i=1; i<=arg1; i++){
-        result=result*i;
-    }
-    return result;
-}
-
-int evalMinus(int arg1){
-    return -arg1;
-}*/
-
 class evaluator
 {
 private:
@@ -72,15 +27,18 @@ private:
 
     QString in;
     QQueue<token> pTokens;
-    QQueue<token> out;
+    QQueue<token> postFix;
     QStack<token> operatorStack;
 
+    int varNr=0;
 
     void Tokenize();
 public:
     evaluator();
     void SetString(QString dataIn);
     void Parse();
+    float Evaluate();
+    float Evaluate(float value);
     bool isParsed();
     QString GetString();
 };

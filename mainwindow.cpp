@@ -34,6 +34,6 @@ void MainWindow::processFunction(QString raw){
 void MainWindow::on_lineEdit_returnPressed()
 {
     Eval.SetString(ui->lineEdit->text());
-    Eval.Parse();
+    Eval.Evaluate(9);
 }
 
