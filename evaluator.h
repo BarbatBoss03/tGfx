@@ -14,13 +14,13 @@ class evaluator
 {
 private:
 
-    QString filter1="-+*^%/";
+    QString filter1="-+*^%/!_";
     QStringList funcFilter={"sin","cos","atan","tan","ln","log"};
 
     QMap<QString, int> priorityDict={{"+", 2},{"-", 2},{"*", 3},{"/", 3},
-                                    {"^", 4},{"(", 1}};
+                                    {"^", 4},{"(", 1},{"_", 2},{"!", 3}};
     QMap<QString, int> assocDict={{"+", 0},{"-", 0},{"*", 0},{"/", 0},
-                                  {"^", 1},{"(", 0}};
+                                  {"^", 1},{"(", 0},{"_", 0},{"!", 0}};
 
     float result;
     bool tokenized=false, parsed=false, hasInput=false;

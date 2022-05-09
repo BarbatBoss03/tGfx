@@ -41,7 +41,7 @@ int evalFact(int arg1){
     return result;
 }
 
-int evalMinus(int arg1){
+float evalMinus(float arg1){
     return -arg1;
 }
 
@@ -82,6 +82,7 @@ void evaluator::Tokenize(){
                 index=in.indexOf(tok, j);
             }
         }
+        qDebug()<<in;
         tokens=in.split(' ');
         for(const auto& tok:qAsConst(tokens)){
             if(tok!=""){
@@ -139,7 +140,7 @@ void evaluator::Parse(){
         }else if(tok.isLPara()){
             operatorStack.push(tok);
         }else if(tok.isRPara()){
-            while(operatorStack.top().isLPara()){
+            while(!operatorStack.top().isLPara()){
                 if(operatorStack.isEmpty()){
                     throw std::runtime_error("mismatched paranthesis");
                 }
@@ -150,23 +151,26 @@ void evaluator::Parse(){
             if(operatorStack.top().isLPara()){
                 operatorStack.pop();
             }
-            if(operatorStack.top().isFunction()){
-                postFix.enqueue(operatorStack.pop());
-            }
+            //if(operatorStack.top().isFunction()){
+            //    postFix.enqueue(operatorStack.pop());
+            //}
         }else if(tok.isFunction()){
             operatorStack.push(tok);
         }
 
     }
+
+    for(token tok:qAsConst(operatorStack)){
+        qDebug()<<tok.GetString();
+    }
+
     while(!operatorStack.isEmpty()){
         if(!operatorStack.top().isLPara())
             postFix.enqueue(operatorStack.pop());
         else
             throw std::runtime_error("mismatched paranthesis");
     }//check for mismatched paranthesis
-    /*for(token tok:qAsConst(postFix)){
-        qDebug()<<tok.GetString();
-    }*/
+
     parsed=true;
 }
 
@@ -189,6 +193,11 @@ float evaluator::Evaluate(){
                 if(tok.GetString()=="!"){
                     token o1=resultStack.pop(), res; //operand 1, result
                     res.SetString(QString::number(evalFact(o1.GetString().toFloat())));
+                    resultStack.push(res);
+                }
+                else if(tok.GetString()=="_"){
+                    token o1=resultStack.pop(), res; //operand 1, result
+                    res.SetString(QString::number(evalMinus(o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
                 else if(tok.GetString()=="+"){
@@ -256,19 +265,24 @@ float evaluator::Evaluate(float value){
                     res.SetString(QString::number(evalFact(o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
+                else if(tok.GetString()=="_"){
+                    token o1=resultStack.pop(), res; //operand 1, result
+                    res.SetString(QString::number(evalMinus(o1.GetString().toFloat())));
+                    resultStack.push(res);
+                }
                 else if(tok.GetString()=="+"){
                     token o1=resultStack.pop(), o2=resultStack.pop(), res;
-                    res.SetString(QString::number(evalAdd(o1.GetString().toFloat(), o2.GetString().toFloat())));
+                    res.SetString(QString::number(evalAdd(o2.GetString().toFloat(), o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
                 else if(tok.GetString()=="-"){
                     token o1=resultStack.pop(), o2=resultStack.pop(), res;
-                    res.SetString(QString::number(evalSub(o1.GetString().toFloat(), o2.GetString().toFloat())));
+                    res.SetString(QString::number(evalSub(o2.GetString().toFloat(), o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
                 else if(tok.GetString()=="/"){
                     token o1=resultStack.pop(), o2=resultStack.pop(), res;
-                    res.SetString(QString::number(evalDiv(o1.GetString().toFloat(), o2.GetString().toFloat())));
+                    res.SetString(QString::number(evalDiv(o2.GetString().toFloat(), o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
                 else if(tok.GetString()=="*"){
@@ -283,7 +297,7 @@ float evaluator::Evaluate(float value){
                 }
                 else if(tok.GetString()=="%"){
                     token o1=resultStack.pop(), o2=resultStack.pop(), res;
-                    res.SetString(QString::number(evalMod(o1.GetString().toFloat(), o2.GetString().toFloat())));
+                    res.SetString(QString::number(evalMod(o2.GetString().toFloat(), o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
             }
