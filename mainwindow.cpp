@@ -60,6 +60,8 @@ void MainWindow::on_inCalc_returnPressed()
 {
     Eval.SetString(ui->inCalc->text());
     calcText.append("\n");
+    calcText.append(ui->inCalc->text());
+    calcText.append("= ");
     calcText.append(QString::number(Eval.Evaluate()));
     ui->outCalc->setText(calcText);
 }
