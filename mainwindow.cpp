@@ -27,7 +27,7 @@ void MainWindow::on_inGraph_returnPressed()
     ui->outGraph->setScene(m_graphicsScene);
     QPainter* p;
     p=new QPainter;
-    QPen pen(Qt::white, 0.5, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    QPen pen(Qt::red, 0.5, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
     p->setPen(pen);
     p->drawPoint(0, 0);
     QPoint Ox1(-1000, 0), Ox2(1000, 0), Oy1(0, -1000), Oy2(0, 1000);
