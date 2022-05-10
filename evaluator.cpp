@@ -160,10 +160,6 @@ void evaluator::Parse(){
 
     }
 
-    for(token tok:qAsConst(operatorStack)){
-        qDebug()<<tok.GetString();
-    }
-
     while(!operatorStack.isEmpty()){
         if(!operatorStack.top().isLPara())
             postFix.enqueue(operatorStack.pop());
@@ -222,7 +218,7 @@ float evaluator::Evaluate(){
                 }
                 else if(tok.GetString()=="^"){
                     token o1=resultStack.pop(), o2=resultStack.pop(), res;
-                    res.SetString(QString::number(evalPow(o1.GetString().toFloat(), o2.GetString().toFloat())));
+                    res.SetString(QString::number(evalPow(o2.GetString().toFloat(), o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
                 else if(tok.GetString()=="%"){
@@ -236,7 +232,6 @@ float evaluator::Evaluate(){
             }
         }
     }
-    qDebug()<<resultStack.top().GetString().toFloat();
     return resultStack.top().GetString().toFloat();
 }
 
@@ -287,12 +282,12 @@ float evaluator::Evaluate(float value){
                 }
                 else if(tok.GetString()=="*"){
                     token o1=resultStack.pop(), o2=resultStack.pop(), res;
-                    res.SetString(QString::number(evalMul(o1.GetString().toFloat(), o2.GetString().toFloat())));
+                    res.SetString(QString::number(evalMul(o2.GetString().toFloat(), o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
                 else if(tok.GetString()=="^"){
                     token o1=resultStack.pop(), o2=resultStack.pop(), res;
-                    res.SetString(QString::number(evalPow(o1.GetString().toFloat(), o2.GetString().toFloat())));
+                    res.SetString(QString::number(evalPow(o2.GetString().toFloat(), o1.GetString().toFloat())));
                     resultStack.push(res);
                 }
                 else if(tok.GetString()=="%"){
@@ -306,12 +301,9 @@ float evaluator::Evaluate(float value){
             }
         }
     }
-    qDebug()<<resultStack.top().GetString().toFloat();
     return resultStack.top().GetString().toFloat();
 }
 
-//Cand din input vine un operator cu prioritate mai mica, se muta toti
-//operatorii din stiva de operatori in postFixput
 QString evaluator::GetString(){
     return this->in;
 }

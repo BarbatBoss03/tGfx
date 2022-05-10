@@ -19,12 +19,17 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_lineEdit_returnPressed();
+    void on_inGraph_returnPressed();
+
+    void on_inCalc_returnPressed();
+
+    void on_clearButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* m_graphicsScene;
     evaluator Eval;
+    QString calcText;
 
     void processFunction(QString raw);
     void drawFunction();
